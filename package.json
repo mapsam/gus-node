@@ -1,0 +1,32 @@
+{
+  "name": "gus-node",
+  "version": "0.1.0",
+  "description": "Crowd sourced point maps.",
+  "main": "server.js",
+  "dependencies": {
+    "body-parser": "^1.4.3",
+    "express": "^4.4.5"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mapsam/gus-node.git"
+  },
+  "keywords": [
+    "crowd source",
+    "maps",
+    "points"
+  ],
+  "author": "mapsam",
+  "bugs": {
+    "url": "https://github.com/mapsam/gus-node/issues"
+  },
+  "homepage": "https://github.com/mapsam/gus-node",
+  "engines" : {
+    "node" : "0.12.x"
+  }
+}
