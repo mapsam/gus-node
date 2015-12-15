@@ -6,7 +6,6 @@ var Points = React.createClass({
       type: 'POST',
       data: point,
       success: function(data) {
-        console.log('successfully posted data', data);
       }.bind(this),
       error: function(xhr, status, err) {
         console.error(this.props.url, status, err.toString());
@@ -14,14 +13,55 @@ var Points = React.createClass({
     });
   },
   getInitialState: function() {
-    return {data: []};
+    return {data: {
+      features: []
+    }};
+  },
+  componentDidMount: function() {
+    $.ajax({
+      url: this.props.url,
+      dataType: 'json',
+      cache: false,
+      success: function(data) {
+        console.log('success!');
+        this.setState({data: data});
+      }.bind(this),
+      error: function(xhr, status, err) {
+        console.error(this.props.url, status, err.toString());
+      }.bind(this)
+    });
   },
   render: function() {
     return (
       <div className="points">
-        These are points.
+        <PointsMap data={this.state.data} />
         <PointsForm onPointSubmit={this.pointSubmit} />
       </div>
+    );
+  }
+});
+
+var PointsMap = React.createClass({
+  render: function() {
+    var pointsList = this.props.data.features.map(function(point) {
+      return (
+        <Point title={point.properties.name} description={point.properties.description} key={point.properties.date} />
+      );  
+    });
+    return (
+      <ul className="points-list">
+        {pointsList}
+      </ul>
+    );
+  }
+});
+
+var Point = React.createClass({
+  render: function() {
+    return (
+      <li className="point">
+        {this.props.title}: {this.props.description}
+      </li>
     );
   }
 });

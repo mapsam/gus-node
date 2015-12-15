@@ -4,6 +4,8 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var app = express();
 
+// this is our database, a GeoJSON FeatureCollection
+// http://geojson.org/geojson-spec.html#feature-collection-objects
 var FC = path.join(__dirname, 'points.geojson');
 
 app.set('port', (process.env.PORT || 3000));
@@ -11,18 +13,17 @@ app.use('/', express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
-// app.get('/api/points', function(req, res) {
-//   fs.readFile(FC, function(err, data) {
-//     if (err) {
-//       console.error(err);
-//       process.exit(1);
-//     }
-//     res.setHeader('Cache-Control', 'no-cache');
-//     res.json(JSON.parse(data));
-//   });
-// });
+app.get('/api/points', function(req, res) {
+  fs.readFile(FC, function(err, data) {
+    if (err) {
+      console.error(err);
+      process.exit(1);
+    }
+    res.setHeader('Cache-Control', 'no-cache');
+    res.json(JSON.parse(data));
+  });
+});
 
-// dataset is a GeoJSON FeatureCollection of points
 app.post('/api/points', function(req, res) {
   fs.readFile(FC, function(err, data) {
     if (err) {
@@ -45,7 +46,7 @@ app.post('/api/points', function(req, res) {
     };
     points.features.push(newPoint);
 
-    fs.writeFile(FC, points, function(err) {
+    fs.writeFile(FC, JSON.stringify(points), function(err) {
       if (err) {
         console.error(err);
         process.exit(1);
